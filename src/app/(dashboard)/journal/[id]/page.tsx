@@ -1,42 +1,50 @@
-import Link from "next/link"
-import { createClient } from "@/lib/supabase/server"
-import { notFound } from "next/navigation"
-import { AIInsightResult } from "@/app/actions/journal"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { ArrowLeft, Sparkles, AlertTriangle, ShieldCheck, Footprints, HeartHandshake } from "lucide-react"
+import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import { notFound } from "next/navigation";
+import { AIInsightResult } from "@/app/actions/journal";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, Sparkles, ShieldCheck, Footprints } from "lucide-react";
 
-import { CrisisBanner } from "@/components/ui/crisis-banner"
-import { SafetyDisclaimer } from "@/components/ui/safety-disclaimer"
+import { CrisisBanner } from "@/components/ui/crisis-banner";
+import { SafetyDisclaimer } from "@/components/ui/safety-disclaimer";
 
-export default async function JournalInsightPage({ params }: { params: { id: string } }) {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+export default async function JournalInsightPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!user) return notFound()
+  if (!user) return notFound();
 
   const { data: journal } = await supabase
     .from("journal_entries")
     .select("*")
     .eq("id", params.id)
     .eq("user_id", user.id)
-    .single()
+    .single();
 
-  if (!journal) return notFound()
+  if (!journal) return notFound();
 
-  const insights = journal.ai_insights as AIInsightResult
+  const insights = journal.ai_insights as AIInsightResult;
 
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-500 pb-12">
-      <Link href="/dashboard" className="inline-flex items-center text-sm font-medium text-sage-600 hover:text-sage-900 transition-colors">
+      <Link
+        href="/dashboard"
+        className="inline-flex items-center text-sm font-medium text-sage-600 hover:text-sage-900 transition-colors"
+      >
         <ArrowLeft className="w-4 h-4 mr-2" />
         Kembali ke Beranda
       </Link>
 
       {insights.concerning_signs && (
-        <CrisisBanner 
-          triggerContext="Sistem kami menangkap kata-kata yang mengisyaratkan keputusasaan mendalam dari entri tulisanmu hari ini." 
+        <CrisisBanner
+          triggerContext="Sistem kami menangkap kata-kata yang mengisyaratkan keputusasaan mendalam dari entri tulisanmu hari ini."
           className="animate-in slide-in-from-top duration-500"
         />
       )}
@@ -47,7 +55,8 @@ export default async function JournalInsightPage({ params }: { params: { id: str
           Insight Refleksimu
         </h1>
         <p className="text-sage-700 max-w-xl">
-          Terima kasih sudah berani memutar kembali perasaanmu. Berikut adalah perspektif tambahan atas tulisanmu hari ini.
+          Terima kasih sudah berani memutar kembali perasaanmu. Berikut adalah
+          perspektif tambahan atas tulisanmu hari ini.
         </p>
       </div>
 
@@ -62,7 +71,7 @@ export default async function JournalInsightPage({ params }: { params: { id: str
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-4 text-sage-800 leading-relaxed text-sm">
-              "{insights.summary}"
+              &quot;{insights.summary}&quot;
             </CardContent>
           </Card>
 
@@ -87,9 +96,11 @@ export default async function JournalInsightPage({ params }: { params: { id: str
 
           {/* User's Original Input */}
           <div className="mt-8 pt-8 border-t border-sage-200">
-            <h4 className="text-xs font-semibold text-sage-500 uppercase tracking-wider mb-2">Jurnal Asli Kamu</h4>
+            <h4 className="text-xs font-semibold text-sage-500 uppercase tracking-wider mb-2">
+              Jurnal Asli Kamu
+            </h4>
             <div className="bg-white border border-sage-200 rounded-lg p-5 italic text-sage-600 text-sm">
-              "{journal.content}"
+              &quot;{journal.content}&quot;
             </div>
           </div>
         </div>
@@ -99,19 +110,35 @@ export default async function JournalInsightPage({ params }: { params: { id: str
           <Card className="border-sage-200 shadow-sm">
             <CardContent className="pt-6 space-y-6">
               <div>
-                <h4 className="text-xs font-semibold text-sage-500 uppercase tracking-wider mb-3">Emosi Dominan</h4>
+                <h4 className="text-xs font-semibold text-sage-500 uppercase tracking-wider mb-3">
+                  Emosi Dominan
+                </h4>
                 <div className="flex flex-wrap gap-2">
-                  {insights.emotions.map(e => (
-                    <Badge key={e} variant="secondary" className="bg-sage-100 text-sage-700 hover:bg-sage-200">{e}</Badge>
+                  {insights.emotions.map((e) => (
+                    <Badge
+                      key={e}
+                      variant="secondary"
+                      className="bg-sage-100 text-sage-700 hover:bg-sage-200"
+                    >
+                      {e}
+                    </Badge>
                   ))}
                 </div>
               </div>
-              
+
               <div>
-                <h4 className="text-xs font-semibold text-sage-500 uppercase tracking-wider mb-3">Pemicu Beban</h4>
+                <h4 className="text-xs font-semibold text-sage-500 uppercase tracking-wider mb-3">
+                  Pemicu Beban
+                </h4>
                 <div className="flex flex-wrap gap-2">
-                  {insights.triggers.map(t => (
-                    <Badge key={t} variant="outline" className="border-sage-300 text-sage-600">{t}</Badge>
+                  {insights.triggers.map((t) => (
+                    <Badge
+                      key={t}
+                      variant="outline"
+                      className="border-sage-300 text-sage-600"
+                    >
+                      {t}
+                    </Badge>
                   ))}
                 </div>
               </div>
@@ -136,5 +163,5 @@ export default async function JournalInsightPage({ params }: { params: { id: str
         </div>
       </div>
     </div>
-  )
+  );
 }

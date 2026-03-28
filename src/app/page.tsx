@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   HeartHandshake,
-  BrainCircuit,
   ShieldCheck,
   BarChart3,
   ArrowRight,

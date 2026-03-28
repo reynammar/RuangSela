@@ -13,7 +13,6 @@ import {
   PenLine,
   UserPlus,
   ShieldCheck,
-  MoreVertical,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { logout } from "@/app/actions/auth";
@@ -89,7 +88,7 @@ export function Navbar() {
                   M
                 </div>
               </Link>
-              {/* @ts-ignore */}
+              {/* @ts-expect-error (auth-action) */}
               <form action={logout} className="flex items-center">
                 <button
                   type="submit"
@@ -155,7 +154,7 @@ export function Navbar() {
               );
             })}
             <div className="pt-4 mt-4 border-t border-slate-100">
-              {/* @ts-ignore */}
+              {/* @ts-expect-error (auth-action) */}
               <form action={logout}>
                 <button
                   type="submit"
